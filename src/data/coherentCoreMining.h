@@ -55,6 +55,7 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
 
     edge_count = 0;
     node_count = 0;
+    double epsContrast = 1e100, epsPenalty = 1e100;
     for ( int i = 0 ; i < node_id2label.size() ; i ++ ) {
         if ( !mfind(connect, i) ) continue;
         int ptr1, ptr2;
@@ -67,6 +68,7 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
             }
             else if ( A[i][ptr1].first == B[i][ptr2].first){
                 if ( mfind(connect, A[i][ptr1].fi) ) {
+                    epsContrast = min(epsContrast, min(A[i][ptr1].se , B[i][ptr2].se));
                     sharingEdges[i].pb(mp(A[i][ptr1].fi, min(A[i][ptr1].se , B[i][ptr2].se)));
                 }
                 ptr1 ++; ptr2 ++;
@@ -100,22 +102,23 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
     for ( int i = 0 ; i < node_id2label.size() ; i ++ ) {
         dup[i + 1] = pow(sharingNodeWeights[i], NORM_CONST);
         node_count += dup[i + 1];
+        epsPenalty = min(epsPenalty, dup[i + 1]);
         du[i + 1] = sharingNodeDegrees[i];
     }
 
     cerr << "total edge count " << edge_count << endl;
     cerr << "total node count " << node_count << endl;
 
-    l = 1.0 / node_count ; r = edge_count; delta = 1.0 / node_count /node_count;
+    l = epsContrast / node_count ; r = edge_count / epsPenalty ; delta = epsContrast / node_count /node_count;
     while ( r - l > delta ) {
         mid = (l + r ) /2;
         solve(mid, seed, sharingEdges);
-        dfs(s);
-        int cnt_node = 0;
-        for ( int i = 1 ; i <= node_count ; i ++  ){
-            cnt_node += v[i];
-        }
-        if (( (double)edge_count * node_count - maxflow)  > EPSILON_1 && cnt_node > seed.size()) l = mid; else r = mid;
+        // dfs(s);
+        // int cnt_node = 0;
+        // for ( int i = 1 ; i <= node_count ; i ++  ){
+        //     cnt_node += v[i];
+        // }
+        if (( (double)edge_count * node_count - maxflow)  > EPSILON_1 /*&& cnt_node > seed.size()*/) l = mid; else r = mid;
 
     }
     cerr << "Final coherent score " << l << endl;

@@ -33,7 +33,7 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     //edge count m node count n
     edge_count = 0;
     node_count = 0;
-    double epsContrast = 1e10, epsPenalty = 1e10;
+    double epsContrast = 1e100, epsPenalty = 1e100;
     set<int> connect;
     connect.clear();
     vector<int> visited;
@@ -113,6 +113,7 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
             cnt += m.se;
         }
         contrast_graph_node_degrees[i] = cnt;
+    }
     for ( int i = 0 ; i < contrast_graph_edges.size() ; i ++ ){
         for ( auto & m : contrast_graph_edges[i]){
             edge_count += m.se;
@@ -132,7 +133,12 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     while ( r - l > delta ) {
         mid = (l + r ) /2;
         solve(mid, seed, contrast_graph_edges);
-        if (( (double)edge_count * node_count - maxflow) > EPSILON_1/) l = mid; else r = mid;
+        // dfs(s);
+        // int cnt_node = 0;
+        // for ( int i = 1 ; i <= node_count ; i ++  ){
+        //     cnt_node += v[i];
+        // }
+        if (( (double)edge_count * node_count - maxflow) > EPSILON_1) l = mid; else r = mid;
 
     }
     cerr << "Final contrast score " << l << endl;
@@ -169,20 +175,6 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     fprintf(matrixOut, "\n");
     printMatrix(A, contrast_set, matrixOut);
     printMatrix(B, contrast_set, matrixOut);
-        double density_tot = 0.0;
-    double density_density = 0.00;
-    for ( int i = 0 ; i < contrast_graph_edges.size() ; i ++ ){
-        if ( mfind(contrast_set, i) ) {
-            density_density += pow(contrast_graph_node_weights[i], NORM_CONST);
-            for ( auto & m : contrast_graph_edges[i] ){
-                if ( mfind(contrast_set, m.fi ) ) {
-                    density_tot += m.se;
-                }
-            }   
-        }
-    }
-    density_tot /= 2;
-    cerr << "The contrast with weight is " << density_tot / density_density << endl;
 
     return contrast_set;
 }
