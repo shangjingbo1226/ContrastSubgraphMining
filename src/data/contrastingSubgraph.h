@@ -33,6 +33,7 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     //edge count m node count n
     edge_count = 0;
     node_count = 0;
+    double epsContrast = 1e10, epsPenalty = 1e10;
     set<int> connect;
     connect.clear();
     vector<int> visited;
@@ -55,8 +56,10 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     for ( auto & m : c2 ) connect.insert(m);
     for ( auto & m : seed ) connect.insert(m);
 
+    cerr << connect.size() << endl;
+
     for ( int i = 0 ; i < node_id2label.size() ; i ++ ) {
-        if ( max_d != -1 && !mfind(connect, i) ) continue;
+        if ( !mfind(connect, i) ) continue;
         int ptr1, ptr2;
         ptr1 = ptr2 = 0;
         //graph A minus graph B
@@ -64,29 +67,33 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
         sort(B[i].begin(), B[i].end());
         while ( ptr1 < A[i].size() && ptr2 < B[i].size() ){
             if ( A[i][ptr1].first < B[i][ptr2].first ) {
-                if ( !mfind(connect, A[i][ptr1].fi) ) { ptr1 ++ ;continue;}
+                epsContrast = min(epsContrast, A[i][ptr1].se);
                 contrast_graph_edges[i].pb(mp(A[i][ptr1].fi, A[i][ptr1].se ));
                 ptr1 ++;
             }
             else if ( A[i][ptr1].first == B[i][ptr2].first){
                 if ( !mfind(connect, A[i][ptr1].fi) ) {ptr1 ++; ptr2 ++; continue;}
                 if ( abs(A[i][ptr1].se - B[i][ptr2].se) == 0 ) { ptr1 ++; ptr2 ++; continue; }
+                epsContrast = min(epsContrast, abs(A[i][ptr1].se - B[i][ptr2].se));
                 contrast_graph_edges[i].pb(mp(A[i][ptr1].fi, abs(A[i][ptr1].se - B[i][ptr2].se)));
                 ptr1 ++; ptr2 ++;
             }
             else {
                 if ( !mfind(connect, B[i][ptr2].fi) ){ptr2 ++; continue;}
+                epsContrast = min(epsContrast, B[i][ptr2].se);
                 contrast_graph_edges[i].pb(mp(B[i][ptr2].fi, B[i][ptr2].se ));
                 ptr2 ++;
             }
         }
         while ( ptr1 < A[i].size() ) {
             if ( !mfind(connect, A[i][ptr1].fi) ) {ptr1 ++; continue;}
+            epsContrast = min(epsContrast, A[i][ptr1].se);
             contrast_graph_edges[i].pb(mp(A[i][ptr1].fi, A[i][ptr1].se ));
             ptr1 ++;
         }
         while ( ptr2 < B[i].size() ){
             if ( !mfind(connect, B[i][ptr2].fi) ) {ptr2 ++; continue;}
+            epsContrast = min(epsContrast, B[i][ptr2].se);
             contrast_graph_edges[i].pb(mp(B[i][ptr2].fi, B[i][ptr2].se ));
             ptr2 ++;
         }
@@ -106,10 +113,8 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
             cnt += m.se;
         }
         contrast_graph_node_degrees[i] = cnt;
-    }
     for ( int i = 0 ; i < contrast_graph_edges.size() ; i ++ ){
         for ( auto & m : contrast_graph_edges[i]){
-            //            cerr << i << " " << m.fi << endl;
             edge_count += m.se;
         }
     }
@@ -119,18 +124,15 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     for ( int i = 0 ; i < node_id2label.size() ; i ++ ) {
         dup[i + 1] = pow(contrast_graph_node_weights[i], NORM_CONST);
         node_count += dup[i + 1];
+        epsPenalty = min(epsPenalty, dup[i + 1]);
         du[i + 1] = contrast_graph_node_degrees[i];
     }
-    l = 1.0 / node_count ; r = edge_count; delta = 1.0 / node_count /node_count;
+    cerr << node_count << ' ' << edge_count << endl;
+    l = epsContrast / node_count ; r = edge_count / epsPenalty ; delta = epsContrast / node_count /node_count;
     while ( r - l > delta ) {
         mid = (l + r ) /2;
         solve(mid, seed, contrast_graph_edges);
-        dfs(s);
-        int cnt_node = 0;
-        for ( int i = 1 ; i <= node_count ; i ++  ){
-            cnt_node += v[i];
-        }
-        if (( (double)edge_count * node_count - maxflow) > EPSILON_1/* && cnt_node > seed.size()*/ ) l = mid; else r = mid;
+        if (( (double)edge_count * node_count - maxflow) > EPSILON_1/) l = mid; else r = mid;
 
     }
     cerr << "Final contrast score " << l << endl;
@@ -167,6 +169,20 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     fprintf(matrixOut, "\n");
     printMatrix(A, contrast_set, matrixOut);
     printMatrix(B, contrast_set, matrixOut);
+        double density_tot = 0.0;
+    double density_density = 0.00;
+    for ( int i = 0 ; i < contrast_graph_edges.size() ; i ++ ){
+        if ( mfind(contrast_set, i) ) {
+            density_density += pow(contrast_graph_node_weights[i], NORM_CONST);
+            for ( auto & m : contrast_graph_edges[i] ){
+                if ( mfind(contrast_set, m.fi ) ) {
+                    density_tot += m.se;
+                }
+            }   
+        }
+    }
+    density_tot /= 2;
+    cerr << "The contrast with weight is " << density_tot / density_density << endl;
 
     return contrast_set;
 }

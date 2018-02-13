@@ -146,7 +146,6 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
     fprintf(matrixOut, "\n");
     printMatrix(A, sharingSubgraph, matrixOut);
     printMatrix(B, sharingSubgraph, matrixOut);
-
     return sharingSubgraph;
 }
 

@@ -21,8 +21,6 @@
 
 double NORM_CONST = 0.0;
 bool LOG_EDGE = false;
-bool BINARY = false;
-bool hetero = false;
 const double epsilon = 1e-10;
 const double EPSILON_1 = 1e-4;
 
@@ -52,7 +50,7 @@ namespace denseSubgraph{
 
     void init(){
         MSET(dup); MSET(du); MSET(head); MSET(ver); MSET(next); MSET(q); MSET(d); MSET(v); MSET(edge);
-        s = t = tot = i = ans = 0;
+        node_count = edge_count = s = t = tot = i = ans = 0;
         maxflow = k = l = r = mid = delta = 0.0;
     }
 
@@ -207,7 +205,6 @@ void loadEdgeList(){
         // w = (int)(w / 100.0);
         if ( u == v ) continue;
         if ( w == 0 ) continue;
-        if ( BINARY ) w = w > 0 ? 1 : 0;
         if ( LOG_EDGE ) w = 1.0 + log(w);
         graph_edges[graph_id][u].push_back(make_pair(v,w));
         graph_edges[graph_id][v].push_back(make_pair(u,w));
