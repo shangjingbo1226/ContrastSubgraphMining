@@ -15,6 +15,7 @@ import pandas as pd
 prefix = "output/"
 fileList = glob.glob(prefix + "*.out")
 
+print "Generating Image"
 for fi in fileList :
     with open(fi, "r") as f :
         graph = f.readline()
@@ -67,9 +68,6 @@ for fi in fileList :
                     tempM2[i][j] = mat2[(it[1], jt[1])]
             mat1 = tempM1
             mat2 = tempM2
-            print "---------------------------------------"
-            print "Generating Image"
-            print fi
     
             newAuthors = ["" for i in range(n1)]
             newTerms = ["" for i in range(n2)]
@@ -100,7 +98,6 @@ for fi in fileList :
             plt.clf()
             plt.close()
     
-            print "---------------------------------------"
             
             images = map(Image.open, [fi+ "_1.png", fi + "_2.png"])
             w,h = zip(*(i.size for i in images))
@@ -175,9 +172,6 @@ for fi in fileList :
             mat1 = tempM1
             mat2 = tempM2
 
-            print "---------------------------------------"
-            print "Generating Image"
-            print fi
     
             newAuthors = ["" for i in range(num)]
 
@@ -206,7 +200,6 @@ for fi in fileList :
             plt.clf()
             plt.close()
     
-            print "---------------------------------------"
 
             images = map(Image.open, [fi+ "_1.png", fi + "_2.png"])
             w,h = zip(*(i.size for i in images))

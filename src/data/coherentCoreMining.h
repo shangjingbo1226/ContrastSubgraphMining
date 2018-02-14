@@ -106,9 +106,6 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
         du[i + 1] = sharingNodeDegrees[i];
     }
 
-    cerr << "total edge count " << edge_count << endl;
-    cerr << "total node count " << node_count << endl;
-
     l = epsContrast / node_count ; r = edge_count / epsPenalty ; delta = epsContrast / node_count /node_count;
     while ( r - l > delta ) {
         mid = (l + r ) /2;
@@ -128,7 +125,7 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
     set<int> sharingSubgraph;
     int ret_cnt = 0;
     for ( int i = 1 ; i <= node_count ; i ++ ) {
-        if ( v[i] ) { cerr << i - 1 << ' ' ; ret_cnt += 1; sharingSubgraph.insert(i - 1); }
+        if ( v[i] ) { ret_cnt += 1; sharingSubgraph.insert(i - 1); }
     }
     cerr << "Found " << ret_cnt << " nodes" << endl;
     stringstream filebuf;

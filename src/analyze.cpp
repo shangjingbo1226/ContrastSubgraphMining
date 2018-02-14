@@ -46,17 +46,22 @@ int main(int argc, char* argv[]) {
     set<int> seeds;
     if ( ! loadArgs(argc, argv, graph_num_A, graph_num_B, core, grow, seeds, step_core, step_contrast) )
         return 0;
-    cerr << "Running algorithm " << endl;
     
     if ( ! core ){
+        cerr << "Running contrast subgraph without core" << endl;
         find_contrast_graph_with_seeds(graph_num_A, graph_num_B, seeds, step_contrast);
     }
     else {
+        cerr << "Running coherent core" << endl;
         set<int> core = find_core_graph_with_seeds(graph_num_A, graph_num_B, seeds, step_core);
         if ( grow ) {
+            cerr << "Running contrast subgraph basing on core with step constraint" << endl;
             find_contrast_graph_with_seeds(graph_num_A, graph_num_B, core, step_contrast);
         } 
-        else find_contrast_graph_with_seeds(graph_num_A, graph_num_B, core, -1);
+        else {
+            cerr << "Running contrast subgraph basing on core without step constraint" << endl;
+            find_contrast_graph_with_seeds(graph_num_A, graph_num_B, core, -1);
+        }
     }
 }
 

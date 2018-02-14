@@ -56,8 +56,6 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     for ( auto & m : c2 ) connect.insert(m);
     for ( auto & m : seed ) connect.insert(m);
 
-    cerr << connect.size() << endl;
-
     for ( int i = 0 ; i < node_id2label.size() ; i ++ ) {
         if ( !mfind(connect, i) ) continue;
         int ptr1, ptr2;
@@ -128,7 +126,6 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
         epsPenalty = min(epsPenalty, dup[i + 1]);
         du[i + 1] = contrast_graph_node_degrees[i];
     }
-    cerr << node_count << ' ' << edge_count << endl;
     l = epsContrast / node_count ; r = edge_count / epsPenalty ; delta = epsContrast / node_count /node_count;
     while ( r - l > delta ) {
         mid = (l + r ) /2;
@@ -149,7 +146,7 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     int ret_cnt = 0;
     set<int> contrast_set;
     for ( int i = 1 ; i <= node_count ; i ++ ) {
-        if ( v[i] ){ cerr << i - 1 << ' ';  ret_cnt ++; contrast_set.insert(i - 1);}
+        if ( v[i] ){  ret_cnt ++; contrast_set.insert(i - 1);}
     }
     cerr << "Found " << ret_cnt << " nodes" << endl;
     for (int u : seed) {
