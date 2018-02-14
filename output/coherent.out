@@ -1,7 +1,7 @@
 Graph 1,Graph 2
 5
-seeds:core,
-core,core,core,core,core,
+seeds:node_1,
+node_1,node_2,node_3,node_4,node_5,
 0,2.09861,1,1.69315,2.09861,
 2.09861,0,2.09861,1.69315,0,
 1,2.09861,0,0,2.38629,
