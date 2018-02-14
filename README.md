@@ -46,7 +46,7 @@ Parameter explanation:
 
 Upon using, a folder containing graph data should be placed in folder `data`. The graph data consists of three parts:
 
-* `GraphName.csv`
+* `GraphName.csv` comma separated `int`, `string` pair, corresponding to `graph index, graph name`.
 
   Example file :
   ```
@@ -55,23 +55,24 @@ Upon using, a folder containing graph data should be placed in folder `data`. Th
   1,Graph 2
   ```
 
-* `NodeName.csv` 
+* `NodeName.csv` comma separated `int`, `string` pair, corresponding to `node index, node name`.
 
   Example file :
   ```
   $ head data/toy/NodeName.csv
-  1,core
-  2,core
-  3,core
-  4,core
-  5,core
-  6,contrast
-  7,contrast
-  8,contrast
-  9,contrast
+  0,node_0
+  1,node_1
+  2,node_2
+  3,node_3
+  4,node_4
+  5,node_5
+  6,node_6
+  7,node_7
+  8,node_8
+  9,node_9
   ```
 
-* `GraphData.csv`
+* `GraphData.csv` comma separated `list` of `int`, correspongding to graph `index, node u, node v, weight(u,v)`.
 
   Example file :
   ```
@@ -87,3 +88,16 @@ Upon using, a folder containing graph data should be placed in folder `data`. Th
   0,0,1,2
   0,2,6,3
   ```
+
+#### Result
+
+After each run of scipt `run.sh`, one can find corresponding raw data and heatmap for contrast subgraph and potentially coherent core in `output` folder. There will be three diagrams for each core/contrast subgraph, one for first graph, one for second graph and one for two diagrams combined in one. 
+
+Find the core and contrast subgraph heatmaps for our toy example below :
+ ![alt text][toy_core]
+
+ ![alt text][toy_contrast]
+ 
+[toy_core]: https://github.com/shangjingbo1226/ContrastSubgraphMining/blob/master/output/coherent.out_bi.png "Heatmap for coherent core in toy data"
+
+[toy_contrast]: https://github.com/shangjingbo1226/ContrastSubgraphMining/blob/master/output/contrast.out_bi.png "Heatmap for contrast subgraph in toy data"
