@@ -22,7 +22,7 @@ Each run will generate a file containing contrast subgraph information and poten
 #### Run Toy Example
 `$ ./run.sh`
 
-The default run will run the experiment on a toy example we created. We are using node `1` as seed, and we label those nodes irrelevant to `1` by `noise`, nodes closely related to `1` in both graphs by `core` and nodes related to `1` but structured differently by `contrast`.
+The default run will run the experiment on a toy example we created. The graph contains `18` nodes and `45` edges in total (i.e. in both layers). We are using node `1` as seed.
 
 #### Custom Run
 ```
@@ -89,7 +89,7 @@ Upon using, a folder containing graph data should be placed in folder `data`. Th
   0,2,6,3
   ```
 
-#### Result
+## Result
 
 After each run of scipt `run.sh`, one can find corresponding raw data and heatmap for contrast subgraph and potentially coherent core in `output` folder. There will be three diagrams for each core/contrast subgraph, one for first graph, one for second graph and one for two diagrams combined in one. 
 
