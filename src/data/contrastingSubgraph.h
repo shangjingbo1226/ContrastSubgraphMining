@@ -138,7 +138,7 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
         if (( (double)edge_count * node_count - maxflow) > EPSILON_1) l = mid; else r = mid;
 
     }
-    cerr << "Final contrast score " << l << endl;
+    cerr << "  Final contrast score " << l << endl;
     solve(l, seed, contrast_graph_edges);
     dfs(s);
 
@@ -148,7 +148,7 @@ set<int> find_contrast_graph_with_seeds(int graph_A, int graph_B, set<int> seed,
     for ( int i = 1 ; i <= node_count ; i ++ ) {
         if ( v[i] ){  ret_cnt ++; contrast_set.insert(i - 1);}
     }
-    cerr << "Found " << ret_cnt << " nodes" << endl;
+    cerr << "  Found " << ret_cnt << " nodes" << endl;
     for (int u : seed) {
         myAssert(contrast_set.count(u), "[Error] Seeds are not in the contrast set!");
     }

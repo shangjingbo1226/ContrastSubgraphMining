@@ -118,7 +118,7 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
         if (( (double)edge_count * node_count - maxflow)  > EPSILON_1 /*&& cnt_node > seed.size()*/) l = mid; else r = mid;
 
     }
-    cerr << "Final coherent score " << l << endl;
+    cerr << "  Final coherent score " << l << endl;
     solve(l, seed, sharingEdges);
     dfs(s);
 
@@ -127,7 +127,7 @@ set<int> find_core_graph_with_seeds(int graph_A, int graph_B, set<int> seed, int
     for ( int i = 1 ; i <= node_count ; i ++ ) {
         if ( v[i] ) { ret_cnt += 1; sharingSubgraph.insert(i - 1); }
     }
-    cerr << "Found " << ret_cnt << " nodes" << endl;
+    cerr << "  Found " << ret_cnt << " nodes" << endl;
     stringstream filebuf;
     filebuf << "output/coherent.out";
     FILE *    matrixOut = tryOpen(filebuf.str(), "w");

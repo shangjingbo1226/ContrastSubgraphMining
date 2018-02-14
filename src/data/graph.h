@@ -184,7 +184,7 @@ void loadNodeLabels()
     }
     fclose(in);
 
-    cerr << "# of total nodes = " << node_id2label.size() << endl;
+    cerr << "  # of total nodes = " << node_id2label.size() << endl;
 }
 
 void loadEdgeList(){
@@ -211,7 +211,7 @@ void loadEdgeList(){
         count += 1;
     }
     fclose(in);
-    cerr << "# of edges in total = " << count << endl;
+    cerr << "  # of edges in total = " << count << endl;
 }
 
 void loadEdges()
@@ -227,7 +227,7 @@ void loadEdges()
         graph_names.push_back(name);
     }
     fclose(in);
-    cerr << "# of graphs = " << graph_names.size() << endl;
+    cerr << "  # of graphs = " << graph_names.size() << endl;
 
     loadEdgeList();
 }
