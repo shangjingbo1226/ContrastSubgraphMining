@@ -1,5 +1,5 @@
-# ContrastSubgraphMining
-Contrast Subgraph Mining from Coherent Cores
+# Contrast Subgraph Mining from Coherent Cores
+
 
 ## Requirements
 
