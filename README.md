@@ -15,6 +15,15 @@ MacOS:
 * g++ 6 `$ brew install gcc6`
 * Python 2.7 `$ brew install python`
 
+Python 2.7 package requirements :
+ 
+* PIL
+* glob
+* numpy
+* matplotlib
+* seaborn
+* pandas
+
 ## Run Command
 
 Each run will generate a file containing contrast subgraph information and potentially a file containing core subgraph information if `<core>` is enabled. And there is also a post processing toolkit provided to generate heatmap of both contrast subgraph and coherent core subgraph.
