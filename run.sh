@@ -1,6 +1,5 @@
 make
 
-#full recommended version
 ./bin/analyze.exe toy 0 1 1 1 1 1 1 1
 
 #without core
