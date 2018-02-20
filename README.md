@@ -1,5 +1,8 @@
 # Contrast Subgraph Mining from Coherent Cores
 
+## Publication
+
+Jingbo Shang, Xiyao Shi, Meng Jiang, Liyuan Liu, Timothy Hanratty, Jiawei Han, "[Contrast Subgraph Mining from Coherent Cores](https://arxiv.org/abs/1802.06189)", submitted to SIGKDD 18, under review. arXiv:1802.06189 [cs.SI]
 
 ## Requirements
 
